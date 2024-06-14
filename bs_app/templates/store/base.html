@@ -1,3 +1,4 @@
+<!-- base.html -->
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -24,71 +25,37 @@
                 <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
             </form>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
-                </li>
+                <!-- Cart Icon and Count -->
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'view_cart' %}">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="badge badge-pill badge-danger">{{ cart_item_count }}</span>
+                        {% if cart_item_count > 0 %}
+                            <span class="badge badge-pill badge-primary">{{ cart_item_count }}</span>
+                        {% endif %}
                     </a>
                 </li>
+                <!-- Authentication Links -->
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">{{ user.username }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
-
-    <!-- Login Modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Sign-in Form -->
-                    <div id="signin-form">
-                        <form method="post" action="{% url 'login' %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" id="username" name="username" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" id="password" name="password" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </form>
-                        <p class="mt-3">Don't have an account? <a href="#" id="show-signup">Create an account</a></p>
-                    </div>
-                    <!-- Sign-up Form -->
-                    <div id="signup-form" style="display: none;">
-                        <form method="post" action="{% url 'signup' %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="new_username">New Username</label>
-                                <input type="text" id="new_username" name="new_username" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_email">Email</label>
-                                <input type="email" id="new_email" name="new_email" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="new_password">New Password</label>
-                                <input type="password" id="new_password" name="new_password" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
-                        </form>
-                        <p class="mt-3">Already have an account? <a href="#" id="show-signin">Sign in</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Sidebar and Content -->
     <div class="d-flex">
         <div class="bg-light" id="sidebar" style="position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; width: 200px; overflow-y: auto;">
@@ -163,20 +130,6 @@
                     $('#suggestions').hide();
                 }
             });
-
-            $('#show-signup').on('click', function(event) {
-                event.preventDefault();
-                $('#signin-form').hide();
-                $('#signup-form').show();
-                $('#loginModalLabel').text('Sign Up');
-            });
-
-            $('#show-signin').on('click', function(event) {
-                event.preventDefault();
-                $('#signup-form').hide();
-                $('#signin-form').show();
-                $('#loginModalLabel').text('Login');
-            });
         });
 
         // Price range update logic
@@ -194,20 +147,8 @@
             document.getElementById('price-range-value').innerText = value;
             let url = new URL(window.location.href);
             url.searchParams.set('max_price', value);
-            window.history.pushState({}, '', url);
-
-            // Fetch updated books based on the price range
-            $.ajax({
-                url: "{% url 'books_by_price' %}",
-                data: { max_price: value },
-                success: function(response) {
-                    console.log(response); // Process the response as needed
-                },
-                error: function(error) {
-                    console.error('Error fetching books:', error);
-                }
-            });
-        }, 300);
+            window.location.href = url.toString();
+        }, 100);
 
         document.getElementById('price-range').addEventListener('input', (event) => {
             const value = event.target.value;
