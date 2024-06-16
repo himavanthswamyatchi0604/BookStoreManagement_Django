@@ -28,7 +28,7 @@
                 <a href="{% url 'add_to_cart' book.id %}" class="btn btn-primary">Add to Cart</a>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#rateReviewModal">Rate/Review it</button>
             {% else %}
-                <p>Please <a href="{% url 'login' %}" class="btn btn-primary">sign in</a> to add to cart or rate/review.</p>
+                <p>Please <a href="{% url 'login' %}" class="btn btn-primary">Sign In</a> to add to cart or rate/review.</p>
             {% endif %}
         </div>
     </div>

@@ -1,8 +1,6 @@
 from django.urls import path
 from . import views
-from .views import add_to_cart, view_cart
-from django.db.models import Avg
-from django.contrib.auth import views as auth_views
+from .views import add_to_cart
 
 urlpatterns = [
     path('', views.index, name='index'),

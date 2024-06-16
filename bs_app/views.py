@@ -21,12 +21,16 @@ def index(request, genre_name=None):
     if max_price:
         books = books.filter(price__lte=max_price)
     genres = Genre.objects.all()
+    login_form = AuthenticationForm()
+    signup_form = SignUpForm()
     return render(request, 'index.html', {
         'books': books,
         'genres': genres,
         'selected_genre': genre_name,
         'query': query,
-        'max_price': max_price
+        'max_price': max_price,
+        'login_form': login_form,
+        'signup_form': signup_form
     })
 
 
@@ -56,15 +60,8 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                return redirect(request.POST.get('next', 'index'))
-    else:
-        form = AuthenticationForm()
-    genres = Genre.objects.all()
-    return render(request, 'login.html', {
-        'form': form,
-        'next': next_url,
-        'genres': genres
-    })
+                return redirect(next_url)
+    return redirect('index')
 
 
 def signup_view(request):
@@ -73,13 +70,7 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             return redirect('/?signup=success')
-    else:
-        form = SignUpForm()
-    genres = Genre.objects.all()
-    return render(request, 'signup.html', {
-        'form': form,
-        'genres': genres
-    })
+    return redirect('index')
 
 
 @login_required

@@ -31,6 +31,105 @@ body {
   z-index: 1000;
 }
 
+/* Autocomplete styles */
+.autocomplete-container {
+    position: relative;
+}
+
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    max-width: 220px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 1050;
+    top: calc(100%); /* Adjust the distance from the search input field */
+    left: 0;
+    display: none;
+}
+
+.autocomplete-suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+    background-color: #f0f0f0;
+}
+
+/* Custom styles for login and signup forms */
+.auth-form {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.auth-form textarea,
+.auth-form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.auth-form button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.auth-form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.auth-form .text-center {
+    margin-top: 10px;
+}
+
+.auth-form .text-center a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.auth-form .text-center a:hover {
+    color: #0056b3;
+}
+
 /* Sidebar styles */
 .sidebar {
     position: fixed;
@@ -89,30 +188,4 @@ body {
     object-fit: cover;
 }
 
-/* Autocomplete styles */
-.autocomplete-container {
-    position: relative;
-}
 
-.autocomplete-suggestions {
-    border: 1px solid #ccc;
-    max-height: 150px;
-    max-width: 220px;
-    overflow-y: auto;
-    position: absolute;
-    background-color: white;
-    width: 100%;
-    z-index: 1050;
-    top: calc(100%); /* Adjust the distance from the search input field */
-    left: 0;
-    display: none;
-}
-
-.autocomplete-suggestion {
-    padding: 10px;
-    cursor: pointer;
-}
-
-.autocomplete-suggestion:hover {
-    background-color: #f0f0f0;
-}
