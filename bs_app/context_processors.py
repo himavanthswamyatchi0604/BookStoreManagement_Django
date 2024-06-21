@@ -1,6 +1,4 @@
 from .models import Cart
-
-
 def cart_item_count(request):
     if request.user.is_authenticated:
         # Replace with actual cart retrieval logic

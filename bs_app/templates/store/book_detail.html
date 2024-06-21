@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block title %}{{ book.title }}{% endblock %}
@@ -28,7 +29,7 @@
                 <a href="{% url 'add_to_cart' book.id %}" class="btn btn-primary">Add to Cart</a>
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#rateReviewModal">Rate/Review it</button>
             {% else %}
-                <p>Please <a href="{% url 'login' %}" class="btn btn-primary">Sign In</a> to add to cart or rate/review.</p>
+                <p>Please <a class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign In</a> to add to cart or rate/review.</p>
             {% endif %}
         </div>
     </div>
@@ -87,4 +88,34 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="login-form" method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username_login">Username</label>
+                            <input type="text" id="id_username_login" name="username" class="form-control" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password_login">Password</label>
+                            <input type="password" id="id_password_login" name="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <p class="text-center mt-3">Don't have an account? <a href="#" id="show-signup-form">Sign Up</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+
