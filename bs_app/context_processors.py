@@ -1,8 +1,9 @@
-from .models import Cart
+from .models import CartItem
+
+
 def cart_item_count(request):
     if request.user.is_authenticated:
-        # Replace with actual cart retrieval logic
-        cart_items = []  # Fetch actual cart items for the user
+        cart_items = CartItem.objects.filter(cart__user=request.user)
         count = len(cart_items)
     else:
         count = 0
