@@ -155,3 +155,39 @@ def remove_from_cart(request, cart_item_id):
     cart_item.delete()
     # Optionally add a success message if needed
     return redirect('view_cart')
+
+
+@login_required
+def update_cart_item_quantity(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        action = request.POST.get('action')
+
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        if action == 'increase':
+            cart_item.quantity += 1
+        elif action == 'decrease':
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+
+        cart_item.save()
+
+        # Calculate updated total price for the item
+        cart_item.refresh_from_db()
+        total_price = cart_item.total_price
+
+        # Calculate total price of the cart
+        cart = cart_item.cart
+        cart_items = cart.items.all()
+        cart_total = sum(item.total_price for item in cart_items)
+
+        # Return updated data
+        data = {
+            'quantity': cart_item.quantity,
+            'total_price': total_price,
+            'cart_total': cart_total
+        }
+        return JsonResponse(data)
+
+    return redirect('view_cart')
