@@ -16,22 +16,28 @@
                                 <div class="row no-gutters h-100">
                                     <div class="col-md-4">
                                         {% if item.book.cover_image %}
-                                            <img src="{{ item.book.cover_image.url }}" class="card-img" alt="{{ item.book.title }}">
+                                            <a href="{% url 'book_detail' item.book.id %}">
+                                                <img src="{{ item.book.cover_image.url }}" class="card-img" alt="{{ item.book.title }}">
+                                            </a>
                                         {% else %}
-                                            <img src="#" class="card-img" alt="{{ item.book.title }}">
+                                            <a href="{% url 'book_detail' item.book.id %}">
+                                                <img src="#" class="card-img" alt="{{ item.book.title }}">
+                                            </a>
                                         {% endif %}
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body d-flex flex-column justify-content-between">
                                             <div>
-                                                <h5 class="card-title">{{ item.book.title }}</h5>
-                                                <p class="card-text">Price: ${{ item.book.price }}</p>
+                                                <a href="{% url 'book_detail' item.book.id %}">
+                                                    <h5 class="card-title">{{ item.book.title }}</h5>
+                                                </a>
+                                                <p class="card-text">Price: ₹{{ item.book.price }}</p>
                                                 <p class="card-text">Quantity:
                                                     <button class="btn btn-sm btn-secondary" onclick="updateCartItemQuantity({{ item.id }}, 'decrease')">-</button>
                                                     {{ item.quantity }}
                                                     <button class="btn btn-sm btn-secondary" onclick="updateCartItemQuantity({{ item.id }}, 'increase')">+</button>
                                                 </p>
-                                                <p class="card-text">Total: ${{ item.total_price }}</p>
+                                                <p class="card-text">Total: ₹{{ item.total_price }}</p>
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <form action="{% url 'remove_from_cart' item.id %}" method="post">
@@ -56,12 +62,29 @@
                 <div class="card-body">
                     <h5 class="card-title">Bill Summary</h5>
                     {% if cart_items %}
-                        {% for item in cart_items %}
-                            <p>{{ item.book.title }} x {{ item.quantity }}: ${{ item.total_price }}</p>
-                        {% endfor %}
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart_items %}
+                                        <tr>
+                                            <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">{{ item.book.title }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>₹{{ item.total_price }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                         <hr>
-                        <p>Total: ${{ total_price }}</p>
-                        <a href="#" class="btn btn-primary">Proceed to Payment</a>
+                        <p class="text-end"><strong>Total: ₹{{ total_price }}</strong></p>
+                        <a href="#" class="btn btn-primary w-100">Proceed to Payment</a>
                     {% else %}
                         <p>Your cart is empty.</p>
                     {% endif %}
@@ -82,8 +105,7 @@
                 csrfmiddlewaretoken: "{{ csrf_token }}"
             },
             success: function(data) {
-                // Update the UI as needed
-                location.reload(); // Example: Reloading the page after update
+                location.reload();
             },
             error: function(error) {
                 console.log("Error:", error);
@@ -114,6 +136,9 @@
     }
     .btn-danger {
         align-self: flex-end;
+    }
+    .table-responsive {
+        margin-top: 1rem;
     }
 </style>
 

@@ -147,7 +147,7 @@ def view_cart(request):
     cart = Cart.objects.get(user=request.user)
     cart_items = cart.items.all()
     total_price = sum(item.total_price for item in cart_items)
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price, 'hide_sidebar': True})
 
 
 def remove_from_cart(request, cart_item_id):

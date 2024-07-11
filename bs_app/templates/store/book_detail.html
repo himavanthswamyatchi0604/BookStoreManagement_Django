@@ -16,7 +16,7 @@
             <h1>{{ book.title }}</h1>
             <p>{{ book.description }}</p>
             <p>Author: {{ book.author.name }}</p>
-            <p>Price: ${{ book.price }}</p>
+            <p>Price: ₹{{ book.price }}</p>
             <p>Rating: {% if avg_rating %}{{ avg_rating|floatformat:1 }}/5 {% endif %}{% if review_count %}({{ review_count }}){% endif %}</p>
             <h6>Genres:</h6>
             <ul>

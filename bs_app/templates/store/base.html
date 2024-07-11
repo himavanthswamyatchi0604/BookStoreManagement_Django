@@ -26,12 +26,18 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Cart Icon and Count -->
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'view_cart' %}">
-                        <i class="fas fa-shopping-cart"></i>
-                        {% if cart_item_count > 0 %}
-                            <span class="badge badge-pill badge-primary">{{ cart_item_count }}</span>
-                        {% endif %}
-                    </a>
+                    {% if user.is_authenticated %}
+                        <a class="nav-link" href="{% url 'view_cart' %}">
+                            <i class="fas fa-shopping-cart"></i>
+                            {% if cart_item_count > 0 %}
+                                <span class="badge badge-pill badge-danger">{{ cart_item_count }}</span>
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    {% endif %}
                 </li>
                 <!-- Authentication Links -->
                 {% if user.is_authenticated %}
@@ -55,6 +61,7 @@
 
     <!-- Sidebar and Content -->
     <div class="d-flex">
+        {% if not hide_sidebar %}
         <div class="bg-light" id="sidebar" style="position: fixed; top: 0; bottom: 0; left: 0; z-index: 100; width: 200px; overflow-y: auto;">
             <div class="sidebar-heading">Categories</div>
             <ul class="list-group list-group-flush">
@@ -81,6 +88,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <div id="page-content-wrapper" style="padding-left: 225px; width: 3000px;">
             {% block content %}{% endblock %}
