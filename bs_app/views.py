@@ -4,9 +4,8 @@ from django.contrib.auth import login as auth_login, authenticate, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Q
 from .forms import SignUpForm, ReviewForm
-from .models import Book, Genre, Review, Author, Cart, CartItem
-from django.http import JsonResponse
-from django.contrib import messages
+from .models import Book, Genre, Review, Author, Cart, CartItem, Order
+from django.http import JsonResponse, HttpResponseBadRequest
 
 
 def index(request, genre_name=None):
